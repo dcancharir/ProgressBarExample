@@ -28,19 +28,20 @@ namespace ProgressBarSignalr.Controllers
 
             return View();
         }
-        public JsonResult LongRunningProcess()
+        [HttpPost]
+        public JsonResult LongRunningProcess(string connectionId)
         {
-            int itemsCount = 100000;
+            int itemsCount = 100;
             int limit = 0;
             bool hide = false;
             for (int i = 0; i <= itemsCount; i++) {
                 //simulating some task
-                //Thread.Sleep(500);
+                Thread.Sleep(100);
                 //calling a function that calculattes percentaje and sends the data to the client
                 if (limit == itemsCount) {
                     hide = true;
                 }
-                Functions.SendProgress("Process in progress...", i, itemsCount,hide);
+                Functions.SendProgress("Process in progress...", i, itemsCount,hide, connectionId);
                 limit++;
             }
             return Json("", JsonRequestBehavior.AllowGet);
